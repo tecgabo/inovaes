@@ -89,7 +89,7 @@ projetos = [
     {"PROJETO": "Árvore Azul", "TIPO": "Startup", "DESCRIÇÃO": "Conservação ambiental com reflorestamento urbano, educação ambiental em escolas e comunidades.", "SITE": ""},
     {"PROJETO": "InovaCom", "TIPO": "Startup", "DESCRIÇÃO": "Comunicação e marketing digital para pequenos negócios, com foco em fortalecimento de marca local.", "SITE": ""},
     {"PROJETO": "Meu Pet Online", "TIPO": "Startup", "DESCRIÇÃO": "Plataforma digital para adoção, cuidados, informações veterinárias e venda de produtos para pets.", "SITE": ""},
-    {"PROJETO": "Orgânicos do Vale", "TIPO": "Startup", "DESCRIÇÃO": "Venda direta de produtos orgânicos, as
+    {"PROJETO": "Orgânicos do Vale", "TIPO": "Startup", "DESCRIÇÃO": "Venda direta de produtos orgânicos, assinaturas semanais e pontos de entrega em toda a região.", "SITE": ""},
     {"PROJETO": "Digitaliza+", "TIPO": "Startup", "DESCRIÇÃO": "Transformação digital acessível para pequenas empresas, com consultoria, treinamento e implantação de sistemas online.", "SITE": ""},
     {"PROJETO": "AgroSabores", "TIPO": "Startup", "DESCRIÇÃO": "Incentivo a pequenos produtores de alimentos gourmet, assessoria em marketing, embalagem e acesso a mercados especiais.", "SITE": ""},
     {"PROJETO": "Conecta Verde", "TIPO": "Startup", "DESCRIÇÃO": "Rede colaborativa para restauração ecológica, plantio de mudas e mapeamento de áreas degradadas.", "SITE": ""},
