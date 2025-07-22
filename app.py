@@ -3,10 +3,9 @@ import pandas as pd
 
 st.set_page_config(page_title="Avaliação de Projetos", layout="wide")
 
-# --- Funções auxiliares ---
 def carregar_projetos(uploaded_file):
     df = pd.read_excel(uploaded_file)
-    return df.iloc[:, 0].tolist()  # Primeira coluna da planilha
+    return df
 
 def get_projetos_disponiveis(lista, ja_escolhidos):
     return [p for p in lista if p not in ja_escolhidos]
@@ -27,7 +26,6 @@ def calcular_ranking(pontuacoes_avaliadores):
     ranking = ranking.sort_values('Total', ascending=False).reset_index(drop=True)
     return ranking
 
-# --- Interface ---
 st.markdown("# 🏆 Avaliação de Projetos")
 
 uploaded_file = st.sidebar.file_uploader("1️⃣ Faça upload da lista (Excel)", type=["xlsx"])
@@ -35,7 +33,13 @@ if not uploaded_file:
     st.info("Envie o arquivo Excel da lista de projetos.")
     st.stop()
 
-lista_projetos = carregar_projetos(uploaded_file)
+df_projetos = carregar_projetos(uploaded_file)
+st.markdown("## 📋 Lista completa dos projetos inscritos")
+st.dataframe(df_projetos, use_container_width=True)
+
+# Para seleção, usaremos a primeira coluna (pode mudar se quiser outra)
+coluna_projeto = df_projetos.columns[0]
+lista_projetos = df_projetos[coluna_projeto].tolist()
 avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 avaliador = st.sidebar.selectbox("2️⃣ Selecione seu nome", avaliadores)
 
@@ -77,6 +81,8 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
     pontuacoes = []
     for projeto in st.session_state[f'selecoes_{avaliador}']:
         st.markdown(f"### {projeto}")
+        # Exibe as informações do projeto na tabela para consulta fácil
+        st.dataframe(df_projetos[df_projetos[coluna_projeto] == projeto], use_container_width=True)
         p = {"Projeto": projeto}
         for c in criterios:
             val = st.radio(
@@ -130,8 +136,8 @@ else:
 
 with st.expander("Como funciona?"):
     st.write("""
-    - Cada avaliador escolhe 10 projetos diferentes (sem repetição entre avaliadores).
-    - Avalie cada projeto nos 5 critérios, com pesos Alto (3), Médio (2) ou Baixo (1).
-    - O sistema mostra o Top 5 no ranking final, somando todos os pontos recebidos.
-    - Baixe todas as respostas em .csv para análise detalhada.
+    1. Veja a lista completa dos projetos para consulta e panorama geral.
+    2. Selecione 10 projetos (sem duplicidade entre avaliadores).
+    3. Após selecionar, avalie cada um nos critérios definidos.
+    4. O ranking será mostrado ao final!
     """)
