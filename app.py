@@ -3,7 +3,6 @@ import pandas as pd
 
 st.set_page_config(page_title="Avaliação de Projetos", layout="wide")
 
-# --- LISTA FIXA DOS 133 PROJETOS (copiada da planilha) ---
 projetos = [
     {"PROJETO": "Fire Projetos Negócios e Pessoas", "TIPO": "Empresa com programa de Inovação", "DESCRIÇÃO": "Trabalhamos com técnicas de autoterapias, controle emocional e empreendedorismo, além de serviços de consultoria e capacitação para empresas e indivíduos.", "SITE": "www.fireaceleradora.com.br"},
     {"PROJETO": "Vent Digital LTDA", "TIPO": "Startup", "DESCRIÇÃO": "Plataforma de IA para apoiar empresas na transformação digital com automações e bots personalizados para WhatsApp, Instagram e Facebook.", "SITE": "www.vent.digital"},
@@ -89,6 +88,12 @@ projetos = [
     {"PROJETO": "InovaCom", "TIPO": "Startup", "DESCRIÇÃO": "Comunicação e marketing digital para pequenos negócios, com foco em fortalecimento de marca local.", "SITE": ""},
     {"PROJETO": "Meu Pet Online", "TIPO": "Startup", "DESCRIÇÃO": "Plataforma digital para adoção, cuidados, informações veterinárias e venda de produtos para pets.", "SITE": ""},
     {"PROJETO": "Orgânicos do Vale", "TIPO": "Startup", "DESCRIÇÃO": "Venda direta de produtos orgânicos, assinaturas semanais e pontos de entrega em toda a região.", "SITE": ""},
+    {"PROJETO": "Recria", "TIPO": "Startup", "DESCRIÇÃO": "Brinquedos sustentáveis de material reciclado, oficinas de educação ambiental e vendas online.", "SITE": ""},
+    {"PROJETO": "InovaBem", "TIPO": "Startup", "DESCRIÇÃO": "Soluções inovadoras para ONGs sociais, captação de recursos, gestão e avaliação de impacto.", "SITE": ""},
+    {"PROJETO": "Viva Eco", "TIPO": "Startup", "DESCRIÇÃO": "Produtos ecológicos e sustentáveis para o dia a dia, consultoria e eventos de educação ambiental.", "SITE": ""},
+    {"PROJETO": "Saúde Total", "TIPO": "Startup", "DESCRIÇÃO": "Monitoramento integrado de saúde familiar, plataforma para registros, vacinas, consultas e exames.", "SITE": ""},
+    {"PROJETO": "Rede Cidadã", "TIPO": "Startup", "DESCRIÇÃO": "Plataforma de participação cidadã digital, consulta pública, votação e acompanhamento de políticas públicas.", "SITE": ""},
+    {"PROJETO": "DoCampo", "TIPO": "Startup", "DESCRIÇÃO": "Facilita a compra de produtos diretamente do produtor rural para consumidores urbanos, sem intermediários.", "SITE": ""},
     {"PROJETO": "Digitaliza+", "TIPO": "Startup", "DESCRIÇÃO": "Transformação digital acessível para pequenas empresas, com consultoria, treinamento e implantação de sistemas online.", "SITE": ""},
     {"PROJETO": "AgroSabores", "TIPO": "Startup", "DESCRIÇÃO": "Incentivo a pequenos produtores de alimentos gourmet, assessoria em marketing, embalagem e acesso a mercados especiais.", "SITE": ""},
     {"PROJETO": "Conecta Verde", "TIPO": "Startup", "DESCRIÇÃO": "Rede colaborativa para restauração ecológica, plantio de mudas e mapeamento de áreas degradadas.", "SITE": ""},
@@ -133,6 +138,7 @@ projetos = [
     {"PROJETO": "Verde Escola", "TIPO": "Startup", "DESCRIÇÃO": "Educação ambiental integrada ao currículo escolar, projetos ecológicos, hortas, reciclagem e participação estudantil.", "SITE": ""},
     {"PROJETO": "Viva Cidade", "TIPO": "Startup", "DESCRIÇÃO": "Qualidade de vida urbana para a terceira idade, lazer, mobilidade, saúde e integração social.", "SITE": ""}
 ]
+
 df_projetos = pd.DataFrame(projetos)
 df_projetos["Selecionar"] = False
 
