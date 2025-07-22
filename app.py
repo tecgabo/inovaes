@@ -170,10 +170,10 @@ selecionados = df_editado[df_editado["Selecionar"] == True]
 qtd_selecionados = len(selecionados)
 qtd_restante = 10 - qtd_selecionados
 
-if qtd_selecionados > 10:
-    st.error("Você selecionou mais de 10 projetos. Por favor, desmarque até ficar com apenas 10.")
-else:
-    st.success(f"{qtd_selecionados} projeto(s) selecionado(s). Faltam {qtd_restante} para completar 10.") if qtd_selecionados < 10 else st.success("Você já selecionou os 10 projetos!")
+if qtd_selecionados < 10:
+    st.success(f"{qtd_selecionados} projeto(s) selecionado(s). Faltam {qtd_restante} para completar 10.")
+elif qtd_selecionados == 10:
+    st.success("Você já selecionou os 10 projetos!")
 
 avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 avaliador = st.sidebar.selectbox("Selecione seu nome", avaliadores)
