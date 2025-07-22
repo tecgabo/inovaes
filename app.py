@@ -185,47 +185,114 @@ if st.button("Confirmar seleção dos projetos"):
     st.session_state[f'selecoes_{avaliador}'] = selecionados["PROJETO"].tolist()
     st.success("Seleção salva! Prossiga para a etapa de pontuação.")
 
-# Etapa 2: Pontuação dos projetos selecionados
-criterios = [
-    "Modelo de Negócio",
-    "Escalabilidade",
-    "Viabilidade Econômica e Financeira",
-    "Alinhamento com os Potenciais do ES",
-    "Potencial de Expansão Nacional e Internacional"
-]
-pesos = {"Alto": 3, "Médio": 2, "Baixo": 1}
-
+# ETAPA 2: Apenas se o avaliador escolheu 10 projetos
 if st.session_state.get(f'selecoes_{avaliador}', []):
-    st.markdown("## Etapa 2: Avalie os projetos selecionados")
     projetos_selecionados = st.session_state[f'selecoes_{avaliador}']
-    pontuacoes = st.session_state.get(f'pontuacoes_{avaliador}_tmp', [])
+    if len(projetos_selecionados) < 10:
+        st.warning("Você precisa selecionar exatamente 10 projetos na etapa anterior para avaliá-los.")
+        st.stop()
+    st.markdown("## Etapa 2: Avalie os 10 projetos que você escolheu")
+    st.info("Para cada projeto, preencha todos os critérios abaixo. Só será possível salvar ao avaliar todos.")
 
+    criterios = [
+        "Modelo de Negócio",
+        "Escalabilidade",
+        "Viabilidade Econômica e Financeira",
+        "Alinhamento com os Potenciais de Desenvolvimento do Espírito Santo",
+        "Potencial de Expansão Nacional e Internacional"
+    ]
+    pesos = {"Alto": 3, "Médio": 2, "Baixo": 1}
+
+    # Carrega avaliações temporárias da sessão
+    pontuacoes = st.session_state.get(f'pontuacoes_{avaliador}_tmp', [])
     if not pontuacoes or len(pontuacoes) != len(projetos_selecionados):
-        # Inicializa a lista se não existir ou se mudou o número de projetos selecionados
         pontuacoes = []
         for projeto in projetos_selecionados:
             p = {"Projeto": projeto}
             for c in criterios:
-                p[c] = 2  # Padrão para 'Médio'
+                p[c] = 2  # Médio como padrão
             pontuacoes.append(p)
 
-    # Interface de avaliação de cada projeto
+    # Interface de avaliação dos projetos selecionados
+    todos_avaliados = True
     for idx, projeto in enumerate(projetos_selecionados):
         st.markdown(f"### {projeto}")
         st.dataframe(df_projetos[df_projetos["PROJETO"] == projeto].drop(columns="Selecionar"), use_container_width=True)
         for c in criterios:
             key_radio = f"{avaliador}_{projeto}_{c}"
             valor_atual = pontuacoes[idx][c] if c in pontuacoes[idx] else 2
+            index = {3: 0, 2: 1, 1: 2}.get(valor_atual, 1)
             val = st.radio(
-                c,
+                f"{c} ({projeto})",
                 options=["Alto", "Médio", "Baixo"],
-                index=[3,2,1].index(valor_atual) if valor_atual in [3,2,1] else 1,
+                index=index,
                 key=key_radio,
                 horizontal=True
             )
             pontuacoes[idx][c] = pesos[val]
+        # Validação: todos preenchidos?
+        if any(pontuacoes[idx][c] not in [1,2,3] for c in criterios):
+            todos_avaliados = False
+
     st.session_state[f'pontuacoes_{avaliador}_tmp'] = pontuacoes
 
     if st.button("Salvar pontuações"):
-        st.session_state[f'pontuacoes_{avaliador}'] = pontuacoes
-        st.success("Pontuações salvas! Veja o ranking ao final.")
+        if not todos_avaliados:
+            st.warning("Avalie todos os critérios de todos os projetos antes de salvar!")
+        else:
+            st.session_state[f'pontuacoes_{avaliador}'] = pontuacoes
+            st.success("Pontuações salvas! Veja o ranking ao final.")
+
+# ETAPA 3: Ranking final dos projetos (após pelo menos um avaliador concluir a avaliação)
+st.markdown("## Ranking Final")
+avaliadores_lista = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
+todas_pontuacoes = []
+for a in avaliadores_lista:
+    resp = st.session_state.get(f'pontuacoes_{a}', [])
+    for r in resp:
+        r_copia = r.copy()
+        r_copia["Avaliador"] = a
+        todas_pontuacoes.append(r_copia)
+
+def calcular_ranking(pontuacoes_avaliadores):
+    df = pd.DataFrame(pontuacoes_avaliadores)
+    if df.empty:
+        return pd.DataFrame()
+    crits = [c for c in df.columns if c not in ['Projeto','Avaliador']]
+    df['Total'] = df[crits].sum(axis=1)
+    ranking = df.groupby('Projeto')['Total'].sum().reset_index()
+    ranking = ranking.sort_values('Total', ascending=False).reset_index(drop=True)
+    return ranking
+
+ranking = calcular_ranking(todas_pontuacoes)
+if not ranking.empty:
+    st.dataframe(ranking.head(5), use_container_width=True)
+    st.download_button(
+        "Baixar ranking completo",
+        ranking.to_csv(index=False),
+        file_name="ranking.csv",
+        mime="text/csv"
+    )
+else:
+    st.info("O ranking será exibido após todas as avaliações serem concluídas.")
+
+st.markdown("### Exportar todas as respostas completas")
+if todas_pontuacoes:
+    df_respostas = pd.DataFrame(todas_pontuacoes)
+    st.dataframe(df_respostas, use_container_width=True)
+    st.download_button(
+        "Baixar respostas completas (.csv)",
+        df_respostas.to_csv(index=False),
+        file_name="respostas_completas.csv",
+        mime="text/csv"
+    )
+else:
+    st.info("As respostas aparecerão aqui após os avaliadores preencherem as pontuações.")
+
+with st.expander("Como funciona?"):
+    st.write("""
+    1. Escolha 10 projetos na lista geral.
+    2. Avalie apenas os 10 escolhidos nos 5 critérios.
+    3. Salve suas avaliações.
+    4. O sistema mostra o ranking geral dos projetos mais bem avaliados (TOP 5).
+    """)
