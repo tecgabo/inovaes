@@ -5,7 +5,6 @@ st.set_page_config(page_title="Avaliação de Projetos", layout="wide")
 
 # --- LISTA FIXA DOS 133 PROJETOS (copiada da planilha) ---
 projetos = [
-   projetos = [
     {"PROJETO": "Fire Projetos Negócios e Pessoas", "TIPO": "Empresa com programa de Inovação", "DESCRIÇÃO": "Trabalhamos com técnicas de autoterapias, controle emocional e empreendedorismo, além de serviços de consultoria e capacitação para empresas e indivíduos.", "SITE": "www.fireaceleradora.com.br"},
     {"PROJETO": "Vent Digital LTDA", "TIPO": "Startup", "DESCRIÇÃO": "Plataforma de IA para apoiar empresas na transformação digital com automações e bots personalizados para WhatsApp, Instagram e Facebook.", "SITE": "www.vent.digital"},
     {"PROJETO": "Legal Pet", "TIPO": "Startup", "DESCRIÇÃO": "A Legal Pet Pass é uma solução especializada na legalização e documentação de pets para viagens nacionais e internacionais, desburocratizando o processo e proporcionando segurança.", "SITE": ""},
