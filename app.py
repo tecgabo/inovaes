@@ -140,7 +140,7 @@ projetos = [
 ]
 df_projetos = pd.DataFrame(projetos)
 df_projetos["Selecionar"] = False
-)
+
 st.markdown("# 🏆 Avaliação de Projetos")
 st.markdown("## 📋 Lista completa dos projetos inscritos")
 
