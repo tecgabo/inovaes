@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Avaliação de Projetos", layout="wide")
+st.markdown("### 👤 Escolha o seu perfil de avaliador")
+avaliadores = ["SECTI 1", "SECTI 2", "SEBRAE", "FINDES", "TECVITÓRIA"]
+avaliador = st.selectbox("Selecione seu nome/instituição avaliadora", avaliadores)
 
 projetos = [
     {"PROJETO": "Fire Projetos Negócios e Pessoas", "TIPO": "Empresa com programa de Inovação", "DESCRIÇÃO": "Trabalhamos com técnicas de autoterapias, controle emocional e empreendedorismo, além de serviços de consultoria e capacitação para empresas e indivíduos.", "SITE": "www.fireaceleradora.com.br"},
@@ -252,6 +254,24 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
             st.session_state[f'pontuacoes_{avaliador}'] = pontuacoes
             st.success("Pontuações salvas! Seu ranking já aparece abaixo.")
 
+# -- Bloco para mostrar o resumo individual após salvar --
+if st.session_state.get(f'pontuacoes_{avaliador}'):
+    st.markdown("---")
+    st.subheader("📝 Resumo da sua avaliação")
+    pontuacoes_individuais = pd.DataFrame(st.session_state[f'pontuacoes_{avaliador}'])
+    # Calcula o total por projeto (ranking individual)
+    cols = [c for c in pontuacoes_individuais.columns if c != 'Projeto']
+    pontuacoes_individuais["Total"] = pontuacoes_individuais[cols].sum(axis=1)
+    ranking_individual = pontuacoes_individuais.sort_values("Total", ascending=False)[["Projeto", "Total"]]
+    st.markdown("**Ranking dos projetos avaliados por você:**")
+    st.dataframe(ranking_individual, use_container_width=True)
+    # Pequeno texto resumo
+    st.markdown(
+        f"Você avaliou {len(ranking_individual)} projetos. "
+        f"O projeto mais bem avaliado por você foi: **{ranking_individual.iloc[0]['Projeto']}** "
+        f"com {ranking_individual.iloc[0]['Total']} pontos."
+    )
+   
 # ETAPA 3: Ranking geral consolidado
 st.markdown("## Ranking Final dos Projetos")
 avaliadores_lista = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
