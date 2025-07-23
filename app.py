@@ -186,11 +186,27 @@ qtd_selecionados = len(selecionados)
 qtd_restante = 10 - qtd_selecionados
 
 if qtd_selecionados > 10:
-    st.error("Você selecionou mais de 10 projetos. Por favor, desmarque até ficar com apenas 10.")
+    st.markdown(
+        "<div style='background-color:#ffdddd; color:#a94442; "
+        "padding:18px; border-radius:8px; font-size:1.3em; font-weight:600;'>"
+        "🚫 Você selecionou mais de 10 projetos.<br>Por favor, desmarque até ficar com apenas 10."
+        "</div>", unsafe_allow_html=True
+    )
+elif qtd_selecionados < 10:
+    st.markdown(
+        f"<div style='background-color:#eafaf1; color:#145a32; "
+        "padding:16px; border-radius:8px; font-size:1.2em; font-weight:600;'>"
+        f"{qtd_selecionados} projeto(s) selecionado(s).<br>Faltam <b>{qtd_restante}</b> para completar 10."
+        "</div>", unsafe_allow_html=True
+    )
 else:
-    if qtd_selecionados < 10:
-        st.success(f"{qtd_selecionados} projeto(s) selecionado(s). Faltam {qtd_restante} para completar 10.")
-    else:
+    st.markdown(
+        "<div style='background-color:#eafaf1; color:#145a32; "
+        "padding:16px; border-radius:8px; font-size:1.2em; font-weight:600;'>"
+        "Você já selecionou os 10 projetos!"
+        "</div>", unsafe_allow_html=True
+    )
+
         st.success("Você já selecionou os 10 projetos!")
 
 if qtd_selecionados > 0:
