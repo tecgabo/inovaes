@@ -14,7 +14,7 @@ with st.expander("Como funciona?", expanded=True):
 
 st.markdown("# 🏆 Avaliação de Projetos")
 st.markdown("## 📋 Lista completa dos projetos inscritos")
-...
+
 
 projetos = [
     {"PROJETO": "Fire Projetos Negócios e Pessoas", "TIPO": "Empresa com programa de Inovação", "DESCRIÇÃO": "Trabalhamos com técnicas de autoterapias, controle emocional e empreendedorismo, além de serviços de consultoria e capacitação para empresas e indivíduos.", "SITE": "www.fireaceleradora.com.br"},
