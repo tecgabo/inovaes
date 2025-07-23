@@ -298,8 +298,6 @@ if not ranking_individual.empty:
         mime="text/csv"
     )
 
-)
-
 # Texto para WhatsApp
 msg = (
     f"Olá, Comissão Organizadora!\n\n"
