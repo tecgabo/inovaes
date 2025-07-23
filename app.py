@@ -313,8 +313,7 @@ st.markdown("----")
 st.markdown("### 📲 Envio para a Comissão Organizadora")
 st.write("Agora que terminamos a avaliação, copie o texto abaixo e envie pelo WhatsApp para a Comissão Organizadora.")
 st.text_area("Mensagem para WhatsApp", msg, height=220)
-    
-)
+   
    
 # ETAPA 3: Ranking geral consolidado
 st.markdown("## Ranking Final dos Projetos")
