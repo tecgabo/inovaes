@@ -145,11 +145,10 @@ st.markdown("# 🏆 Avaliação de Projetos")
 st.markdown("## 📋 Lista completa dos projetos inscritos")
 st.write(
     "Marque até 10 projetos para avaliação. "
-    "Se quiser ler a descrição completa de um projeto, selecione-o abaixo da tabela."
+    "A coluna de descrição está completa; ajuste a largura dela para melhor leitura se necessário."
 )
 
-# Tabela resumida apenas para seleção rápida
-df_selecao = df_projetos[["PROJETO", "TIPO"]].copy()
+df_selecao = df_projetos[["PROJETO", "TIPO", "DESCRIÇÃO"]].copy()
 df_selecao["Selecionar"] = False
 
 df_editado = st.data_editor(
@@ -162,6 +161,7 @@ df_editado = st.data_editor(
         ),
         "PROJETO": "Projeto",
         "TIPO": "Tipo",
+        "DESCRIÇÃO": "Descrição detalhada",
     },
     hide_index=True,
     use_container_width=True,
@@ -179,16 +179,13 @@ else:
     else:
         st.success("Você já selecionou os 10 projetos!")
 
-# BLOCO DE DETALHE SOB DEMANDA
-st.markdown("### 🔍 Ver detalhes de um projeto")
-opcoes_projetos = df_projetos["PROJETO"].tolist()
-projeto_detalhe = st.selectbox("Selecione um projeto para ler a descrição completa", [""] + opcoes_projetos)
-if projeto_detalhe:
-    projeto_info = df_projetos[df_projetos["PROJETO"] == projeto_detalhe].iloc[0]
-    st.markdown(f"**{projeto_info['PROJETO']}**  \n**Tipo:** {projeto_info['TIPO']}")
-    st.markdown(f"**Descrição completa:** {projeto_info['DESCRIÇÃO']}")
-    if projeto_info['SITE']:
-        st.markdown(f"🌐 [Site oficial]({projeto_info['SITE']})")
+if qtd_selecionados > 0:
+    st.markdown("#### Projetos escolhidos:")
+    for projeto in selecionados["PROJETO"]:
+        st.markdown(
+            f"<div style='background-color:#d1f2eb; color:#196f3d; padding:8px 12px; margin-bottom:4px; border-radius:6px; font-weight:600'>{projeto}</div>",
+            unsafe_allow_html=True
+        )
 
 avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 avaliador = st.sidebar.selectbox("Selecione seu nome", avaliadores)
