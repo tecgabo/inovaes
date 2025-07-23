@@ -185,7 +185,7 @@ if st.button("Confirmar seleção dos projetos"):
     st.session_state[f'selecoes_{avaliador}'] = selecionados["PROJETO"].tolist()
     st.success("Seleção salva! Prossiga para a etapa de pontuação.")
 
-# ETAPA 2: Apenas se o avaliador escolheu 10 projetos
+# ETAPA 2: Avaliação individual do avaliador (não depende de outros)
 if st.session_state.get(f'selecoes_{avaliador}', []):
     projetos_selecionados = st.session_state[f'selecoes_{avaliador}']
     if len(projetos_selecionados) < 10:
@@ -203,7 +203,6 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
     ]
     pesos = {"Alto": 3, "Médio": 2, "Baixo": 1}
 
-    # Carrega avaliações temporárias da sessão
     pontuacoes = st.session_state.get(f'pontuacoes_{avaliador}_tmp', [])
     if not pontuacoes or len(pontuacoes) != len(projetos_selecionados):
         pontuacoes = []
@@ -213,7 +212,6 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
                 p[c] = 2  # Médio como padrão
             pontuacoes.append(p)
 
-    # Interface de avaliação dos projetos selecionados
     todos_avaliados = True
     for idx, projeto in enumerate(projetos_selecionados):
         st.markdown(f"### {projeto}")
@@ -230,7 +228,6 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
                 horizontal=True
             )
             pontuacoes[idx][c] = pesos[val]
-        # Validação: todos preenchidos?
         if any(pontuacoes[idx][c] not in [1,2,3] for c in criterios):
             todos_avaliados = False
 
@@ -241,10 +238,10 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
             st.warning("Avalie todos os critérios de todos os projetos antes de salvar!")
         else:
             st.session_state[f'pontuacoes_{avaliador}'] = pontuacoes
-            st.success("Pontuações salvas! Veja o ranking ao final.")
+            st.success("Pontuações salvas! Seu ranking já aparece abaixo.")
 
-# ETAPA 3: Ranking final dos projetos (após pelo menos um avaliador concluir a avaliação)
-st.markdown("## Ranking Final")
+# ETAPA 3: Ranking geral consolidado aparece SEMPRE após a avaliação do usuário
+st.markdown("## Ranking Final dos Projetos")
 avaliadores_lista = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 todas_pontuacoes = []
 for a in avaliadores_lista:
@@ -274,7 +271,7 @@ if not ranking.empty:
         mime="text/csv"
     )
 else:
-    st.info("O ranking será exibido após todas as avaliações serem concluídas.")
+    st.info("O ranking será exibido após as primeiras avaliações serem concluídas.")
 
 st.markdown("### Exportar todas as respostas completas")
 if todas_pontuacoes:
@@ -287,12 +284,5 @@ if todas_pontuacoes:
         mime="text/csv"
     )
 else:
-    st.info("As respostas aparecerão aqui após os avaliadores preencherem as pontuações.")
+    st.info("As respostas aparecerão aqui após as avaliações.")
 
-with st.expander("Como funciona?"):
-    st.write("""
-    1. Escolha 10 projetos na lista geral.
-    2. Avalie apenas os 10 escolhidos nos 5 critérios.
-    3. Salve suas avaliações.
-    4. O sistema mostra o ranking geral dos projetos mais bem avaliados (TOP 5).
-    """)
