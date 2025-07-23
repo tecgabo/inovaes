@@ -1,9 +1,20 @@
 import streamlit as st
 import pandas as pd
 
-st.markdown("### 👤 Escolha o seu perfil de avaliador")
 avaliadores = ["SECTI 1", "SECTI 2", "SEBRAE", "FINDES", "TECVITÓRIA"]
 avaliador = st.selectbox("Selecione seu nome/instituição avaliadora", avaliadores)
+
+with st.expander("Como funciona?", expanded=True):
+    st.write("""
+    1. Marque até 10 projetos para avaliação na tabela abaixo.
+    2. Se quiser, veja a descrição completa de cada projeto usando o menu logo abaixo da tabela.
+    3. Após selecionar 10, confirme sua escolha e faça a avaliação dos critérios.
+    4. O sistema mostra o ranking geral (TOP 5) com os projetos mais bem avaliados.
+    """)
+
+st.markdown("# 🏆 Avaliação de Projetos")
+st.markdown("## 📋 Lista completa dos projetos inscritos")
+...
 
 projetos = [
     {"PROJETO": "Fire Projetos Negócios e Pessoas", "TIPO": "Empresa com programa de Inovação", "DESCRIÇÃO": "Trabalhamos com técnicas de autoterapias, controle emocional e empreendedorismo, além de serviços de consultoria e capacitação para empresas e indivíduos.", "SITE": "www.fireaceleradora.com.br"},
@@ -190,7 +201,7 @@ if qtd_selecionados > 0:
         )
 
 avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
-avaliador = st.sidebar.selectbox("Selecione seu nome", avaliadores)
+avaliador = st.selectbox("Selecione seu nome/instituição avaliadora", avaliadores)
 
 if st.button("Confirmar seleção dos projetos"):
     if qtd_selecionados != 10:
