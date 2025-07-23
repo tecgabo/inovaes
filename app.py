@@ -290,11 +290,14 @@ if st.session_state.get(f'pontuacoes_{avaliador}'):
     st.dataframe(ranking_individual, use_container_width=True)
    
     # Download CSV individual
-st.download_button(
-    label="📥 Baixar ranking individual (.csv)",
-    data=ranking_individual.to_csv(index=False),
-    file_name=f"ranking_avaliador_{avaliador}.csv",
-    mime="text/csv"
+if not ranking_individual.empty:
+    st.download_button(
+        label="📥 Baixar ranking individual (.csv)",
+        data=ranking_individual.to_csv(index=False),
+        file_name=f"ranking_avaliador_{avaliador}.csv",
+        mime="text/csv"
+    )
+
 )
 
 # Texto para WhatsApp
