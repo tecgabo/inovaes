@@ -291,7 +291,7 @@ if st.session_state.get(f'pontuacoes_{avaliador}'):
    
     # Download CSV individual
 
-if not ranking_individual.empty:
+if 'ranking_individual' in locals() and not ranking_individual.empty:
     st.download_button(
         label="📥 Baixar ranking individual (.csv)",
         data=ranking_individual.to_csv(index=False),
