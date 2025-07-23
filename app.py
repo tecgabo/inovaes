@@ -207,8 +207,6 @@ else:
         "</div>", unsafe_allow_html=True
     )
 
-        st.success("Você já selecionou os 10 projetos!")
-
 if qtd_selecionados > 0:
     st.markdown("#### Projetos escolhidos:")
     for projeto in selecionados["PROJETO"]:
