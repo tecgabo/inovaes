@@ -140,15 +140,22 @@ projetos = [
 ]
 df_projetos = pd.DataFrame(projetos)
 df_projetos["Selecionar"] = False
-
+)
 st.markdown("# 🏆 Avaliação de Projetos")
 st.markdown("## 📋 Lista completa dos projetos inscritos")
 
-st.write("Leia atentamente os projetos abaixo e marque até 10 para avaliação:")
+st.write(
+    "Leia atentamente os projetos abaixo. "
+    "Use a tabela para selecionar até 10 projetos para avaliação. "
+    "A descrição completa de cada projeto pode ser lida logo abaixo da tabela:"
+)
 
-# SELEÇÃO DOS 10 PROJETOS
+# Tabela resumida apenas para seleção rápida (projeto, tipo, selecionar)
+df_selecao = df_projetos[["PROJETO", "TIPO"]].copy()
+df_selecao["Selecionar"] = False
+
 df_editado = st.data_editor(
-    df_projetos,
+    df_selecao,
     column_config={
         "Selecionar": st.column_config.CheckboxColumn(
             "Selecionar para avaliar",
@@ -157,12 +164,9 @@ df_editado = st.data_editor(
         ),
         "PROJETO": "Projeto",
         "TIPO": "Tipo",
-        "DESCRIÇÃO": "Descrição do produto/serviço",
-        "SITE": "Site",
     },
     hide_index=True,
     use_container_width=True,
-    disabled=["PROJETO", "TIPO", "DESCRIÇÃO", "SITE"]
 )
 
 selecionados = df_editado[df_editado["Selecionar"] == True]
@@ -187,7 +191,15 @@ if st.button("Confirmar seleção dos projetos"):
     st.session_state[f'selecoes_{avaliador}'] = selecionados["PROJETO"].tolist()
     st.success("Seleção salva! Prossiga para a etapa de pontuação.")
 
-# ETAPA 2: Avaliação individual - só mostra se selecionou 10 projetos e confirmou
+# --- Descrição expandida dos projetos (sempre visível para leitura fácil) ---
+st.markdown("### 📝 Descrição completa dos projetos")
+for idx, row in df_projetos.iterrows():
+    with st.expander(f"{row['PROJETO']} [{row['TIPO']}]"):
+        st.markdown(f"**Descrição:** {row['DESCRIÇÃO']}")
+        if row['SITE']:
+            st.markdown(f"🌐 [Site oficial]({row['SITE']})")
+
+# ETAPA 2: Avaliação individual do avaliador
 if st.session_state.get(f'selecoes_{avaliador}', []):
     projetos_selecionados = st.session_state[f'selecoes_{avaliador}']
     if len(projetos_selecionados) < 10:
@@ -217,7 +229,7 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
     todos_avaliados = True
     for idx, projeto in enumerate(projetos_selecionados):
         st.markdown(f"### {projeto}")
-        st.dataframe(df_projetos[df_projetos["PROJETO"] == projeto].drop(columns="Selecionar"), use_container_width=True)
+        st.dataframe(df_projetos[df_projetos["PROJETO"] == projeto][["PROJETO", "TIPO", "DESCRIÇÃO", "SITE"]], use_container_width=True)
         for c in criterios:
             key_radio = f"{avaliador}_{projeto}_{c}"
             valor_atual = pontuacoes[idx][c] if c in pontuacoes[idx] else 2
@@ -291,7 +303,8 @@ else:
 with st.expander("Como funciona?"):
     st.write("""
     1. Escolha 10 projetos na lista geral.
-    2. Avalie apenas os 10 escolhidos nos 5 critérios.
-    3. Salve suas avaliações.
-    4. O sistema mostra o ranking geral dos projetos mais bem avaliados (TOP 5).
+    2. Leia a descrição de cada projeto clicando no nome na lista expandida.
+    3. Avalie apenas os 10 escolhidos nos 5 critérios.
+    4. Salve suas avaliações.
+    5. O sistema mostra o ranking geral dos projetos mais bem avaliados (TOP 5).
     """)
