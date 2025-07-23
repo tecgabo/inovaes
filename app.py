@@ -289,10 +289,12 @@ if st.session_state.get(f'pontuacoes_{avaliador}'):
     st.markdown("**Ranking dos projetos avaliados por você:**")
     st.dataframe(ranking_individual, use_container_width=True)
     # Pequeno texto resumo
-    st.markdown(
-        f"Você avaliou {len(ranking_individual)} projetos. "
-        f"O projeto mais bem avaliado por você foi: **{ranking_individual.iloc[0]['Projeto']}** "
-        f"com {ranking_individual.iloc[0]['Total']} pontos."
+  st.markdown(f"Você avaliou {len(ranking_individual)} projetos.")
+st.markdown(
+    f"O projeto mais bem avaliado por você foi: **{ranking_individual.iloc[0]['Projeto']}** "
+    f"com {ranking_individual.iloc[0]['Total']} pontos."
+)
+
     # Download CSV individual
 st.download_button(
     label="📥 Baixar ranking individual (.csv)",
