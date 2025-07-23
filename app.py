@@ -138,7 +138,6 @@ projetos = [
     {"PROJETO": "Verde Escola", "TIPO": "Startup", "DESCRIÇÃO": "Educação ambiental integrada ao currículo escolar, projetos ecológicos, hortas, reciclagem e participação estudantil.", "SITE": ""},
     {"PROJETO": "Viva Cidade", "TIPO": "Startup", "DESCRIÇÃO": "Qualidade de vida urbana para a terceira idade, lazer, mobilidade, saúde e integração social.", "SITE": ""}
 ]
-
 df_projetos = pd.DataFrame(projetos)
 df_projetos["Selecionar"] = False
 
@@ -147,6 +146,7 @@ st.markdown("## 📋 Lista completa dos projetos inscritos")
 
 st.write("Leia atentamente os projetos abaixo e marque até 10 para avaliação:")
 
+# SELEÇÃO DOS 10 PROJETOS
 df_editado = st.data_editor(
     df_projetos,
     column_config={
@@ -166,14 +166,16 @@ df_editado = st.data_editor(
 )
 
 selecionados = df_editado[df_editado["Selecionar"] == True]
-
 qtd_selecionados = len(selecionados)
 qtd_restante = 10 - qtd_selecionados
 
-if qtd_selecionados < 10:
-    st.success(f"{qtd_selecionados} projeto(s) selecionado(s). Faltam {qtd_restante} para completar 10.")
-elif qtd_selecionados == 10:
-    st.success("Você já selecionou os 10 projetos!")
+if qtd_selecionados > 10:
+    st.error("Você selecionou mais de 10 projetos. Por favor, desmarque até ficar com apenas 10.")
+else:
+    if qtd_selecionados < 10:
+        st.success(f"{qtd_selecionados} projeto(s) selecionado(s). Faltam {qtd_restante} para completar 10.")
+    else:
+        st.success("Você já selecionou os 10 projetos!")
 
 avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 avaliador = st.sidebar.selectbox("Selecione seu nome", avaliadores)
@@ -185,7 +187,7 @@ if st.button("Confirmar seleção dos projetos"):
     st.session_state[f'selecoes_{avaliador}'] = selecionados["PROJETO"].tolist()
     st.success("Seleção salva! Prossiga para a etapa de pontuação.")
 
-# ETAPA 2: Avaliação individual do avaliador (não depende de outros)
+# ETAPA 2: Avaliação individual - só mostra se selecionou 10 projetos e confirmou
 if st.session_state.get(f'selecoes_{avaliador}', []):
     projetos_selecionados = st.session_state[f'selecoes_{avaliador}']
     if len(projetos_selecionados) < 10:
@@ -240,7 +242,7 @@ if st.session_state.get(f'selecoes_{avaliador}', []):
             st.session_state[f'pontuacoes_{avaliador}'] = pontuacoes
             st.success("Pontuações salvas! Seu ranking já aparece abaixo.")
 
-# ETAPA 3: Ranking geral consolidado aparece SEMPRE após a avaliação do usuário
+# ETAPA 3: Ranking geral consolidado
 st.markdown("## Ranking Final dos Projetos")
 avaliadores_lista = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 todas_pontuacoes = []
@@ -286,3 +288,10 @@ if todas_pontuacoes:
 else:
     st.info("As respostas aparecerão aqui após as avaliações.")
 
+with st.expander("Como funciona?"):
+    st.write("""
+    1. Escolha 10 projetos na lista geral.
+    2. Avalie apenas os 10 escolhidos nos 5 critérios.
+    3. Salve suas avaliações.
+    4. O sistema mostra o ranking geral dos projetos mais bem avaliados (TOP 5).
+    """)
