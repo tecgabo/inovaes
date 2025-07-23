@@ -299,22 +299,23 @@ if 'ranking_individual' in locals() and not ranking_individual.empty:
         mime="text/csv"
     )
 
-# Texto para WhatsApp
-msg = (
-    f"Olá, Comissão Organizadora!\n\n"
-    f"Concluí minha avaliação dos projetos no sistema. Meu ranking individual foi:\n"
-)
-for idx, row in ranking_individual.iterrows():
-    msg += f"{idx+1}. {row['Projeto']} — {row['Total']} pontos\n"
-msg += (
-    f"\nProjeto mais bem avaliado: {ranking_individual.iloc[0]['Projeto']} "
-    f"com {ranking_individual.iloc[0]['Total']} pontos.\n\n"
-    f"Avaliador: {avaliador}"
-)
-st.markdown("----")
-st.markdown("### 📲 Envio para a Comissão Organizadora")
-st.write("Agora que terminamos a avaliação, copie o texto abaixo e envie pelo WhatsApp para a Comissão Organizadora.")
-st.text_area("Mensagem para WhatsApp", msg, height=220)
+# Texto para WhatsApp (só mostra se ranking_individual existe)
+if 'ranking_individual' in locals() and not ranking_individual.empty:
+    msg = (
+        f"Olá, Comissão Organizadora!\n\n"
+        f"Concluí minha avaliação dos projetos no sistema. Meu ranking individual foi:\n"
+    )
+    for idx, row in ranking_individual.iterrows():
+        msg += f"{idx+1}. {row['Projeto']} — {row['Total']} pontos\n"
+    msg += (
+        f"\nProjeto mais bem avaliado: {ranking_individual.iloc[0]['Projeto']} "
+        f"com {ranking_individual.iloc[0]['Total']} pontos.\n\n"
+        f"Avaliador: {avaliador}"
+    )
+    st.markdown("----")
+    st.markdown("### 📲 Envio para a Comissão Organizadora")
+    st.write("Agora que terminamos a avaliação, copie o texto abaixo e envie pelo WhatsApp para a Comissão Organizadora.")
+    st.text_area("Mensagem para WhatsApp", msg, height=220)
    
    
 # ETAPA 3: Ranking geral consolidado
