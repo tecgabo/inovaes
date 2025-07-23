@@ -143,14 +143,12 @@ df_projetos["Selecionar"] = False
 
 st.markdown("# 🏆 Avaliação de Projetos")
 st.markdown("## 📋 Lista completa dos projetos inscritos")
-
 st.write(
-    "Leia atentamente os projetos abaixo. "
-    "Use a tabela para selecionar até 10 projetos para avaliação. "
-    "A descrição completa de cada projeto pode ser lida logo abaixo da tabela:"
+    "Marque até 10 projetos para avaliação. "
+    "Se quiser ler a descrição completa de um projeto, selecione-o abaixo da tabela."
 )
 
-# Tabela resumida apenas para seleção rápida (projeto, tipo, selecionar)
+# Tabela resumida apenas para seleção rápida
 df_selecao = df_projetos[["PROJETO", "TIPO"]].copy()
 df_selecao["Selecionar"] = False
 
@@ -181,6 +179,17 @@ else:
     else:
         st.success("Você já selecionou os 10 projetos!")
 
+# BLOCO DE DETALHE SOB DEMANDA
+st.markdown("### 🔍 Ver detalhes de um projeto")
+opcoes_projetos = df_projetos["PROJETO"].tolist()
+projeto_detalhe = st.selectbox("Selecione um projeto para ler a descrição completa", [""] + opcoes_projetos)
+if projeto_detalhe:
+    projeto_info = df_projetos[df_projetos["PROJETO"] == projeto_detalhe].iloc[0]
+    st.markdown(f"**{projeto_info['PROJETO']}**  \n**Tipo:** {projeto_info['TIPO']}")
+    st.markdown(f"**Descrição completa:** {projeto_info['DESCRIÇÃO']}")
+    if projeto_info['SITE']:
+        st.markdown(f"🌐 [Site oficial]({projeto_info['SITE']})")
+
 avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
 avaliador = st.sidebar.selectbox("Selecione seu nome", avaliadores)
 
@@ -190,14 +199,6 @@ if st.button("Confirmar seleção dos projetos"):
         st.stop()
     st.session_state[f'selecoes_{avaliador}'] = selecionados["PROJETO"].tolist()
     st.success("Seleção salva! Prossiga para a etapa de pontuação.")
-
-# --- Descrição expandida dos projetos (sempre visível para leitura fácil) ---
-st.markdown("### 📝 Descrição completa dos projetos")
-for idx, row in df_projetos.iterrows():
-    with st.expander(f"{row['PROJETO']} [{row['TIPO']}]"):
-        st.markdown(f"**Descrição:** {row['DESCRIÇÃO']}")
-        if row['SITE']:
-            st.markdown(f"🌐 [Site oficial]({row['SITE']})")
 
 # ETAPA 2: Avaliação individual do avaliador
 if st.session_state.get(f'selecoes_{avaliador}', []):
@@ -302,9 +303,8 @@ else:
 
 with st.expander("Como funciona?"):
     st.write("""
-    1. Escolha 10 projetos na lista geral.
-    2. Leia a descrição de cada projeto clicando no nome na lista expandida.
-    3. Avalie apenas os 10 escolhidos nos 5 critérios.
-    4. Salve suas avaliações.
-    5. O sistema mostra o ranking geral dos projetos mais bem avaliados (TOP 5).
+    1. Marque até 10 projetos para avaliação na tabela acima.
+    2. Se quiser, veja a descrição completa de cada projeto usando o menu logo abaixo da tabela.
+    3. Após selecionar 10, confirme sua escolha e faça a avaliação dos critérios.
+    4. O sistema mostra o ranking geral (TOP 5) com os projetos mais bem avaliados.
     """)
