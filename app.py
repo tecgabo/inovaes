@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 
+st.markdown("# 🏆 Avaliação de Projetos")
 avaliadores = ["SECTI 1", "SECTI 2", "SEBRAE", "FINDES", "TECVITÓRIA"]
 avaliador = st.selectbox("Selecione seu nome/instituição avaliadora", avaliadores)
 
@@ -12,7 +13,7 @@ with st.expander("Como funciona?", expanded=True):
     4. O sistema mostra o ranking geral (TOP 5) com os projetos mais bem avaliados.
     """)
 
-st.markdown("# 🏆 Avaliação de Projetos")
+
 st.markdown("## 📋 Lista completa dos projetos inscritos")
 
 
