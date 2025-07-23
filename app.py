@@ -215,9 +215,6 @@ if qtd_selecionados > 0:
             unsafe_allow_html=True
         )
 
-avaliadores = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
-avaliador = st.selectbox("Selecione seu nome/instituição avaliadora", avaliadores)
-
 if st.button("Confirmar seleção dos projetos"):
     if qtd_selecionados != 10:
         st.warning("Selecione exatamente 10 projetos para prosseguir.")
