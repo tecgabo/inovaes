@@ -293,6 +293,31 @@ if st.session_state.get(f'pontuacoes_{avaliador}'):
         f"Você avaliou {len(ranking_individual)} projetos. "
         f"O projeto mais bem avaliado por você foi: **{ranking_individual.iloc[0]['Projeto']}** "
         f"com {ranking_individual.iloc[0]['Total']} pontos."
+    # Download CSV individual
+st.download_button(
+    label="📥 Baixar ranking individual (.csv)",
+    data=ranking_individual.to_csv(index=False),
+    file_name=f"ranking_avaliador_{avaliador}.csv",
+    mime="text/csv"
+)
+
+# Texto para WhatsApp
+msg = (
+    f"Olá, Comissão Organizadora!\n\n"
+    f"Concluí minha avaliação dos projetos no sistema. Meu ranking individual foi:\n"
+)
+for idx, row in ranking_individual.iterrows():
+    msg += f"{idx+1}. {row['Projeto']} — {row['Total']} pontos\n"
+msg += (
+    f"\nProjeto mais bem avaliado: {ranking_individual.iloc[0]['Projeto']} "
+    f"com {ranking_individual.iloc[0]['Total']} pontos.\n\n"
+    f"Avaliador: {avaliador}"
+)
+st.markdown("----")
+st.markdown("### 📲 Envio para a Comissão Organizadora")
+st.write("Agora que terminamos a avaliação, copie o texto abaixo e envie pelo WhatsApp para a Comissão Organizadora.")
+st.text_area("Mensagem para WhatsApp", msg, height=220)
+    
     )
    
 # ETAPA 3: Ranking geral consolidado
