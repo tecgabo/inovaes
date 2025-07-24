@@ -223,6 +223,26 @@ if st.button("Confirmar seleção dos projetos"):
     st.success("Seleção salva! Prossiga para a etapa de pontuação.")
 
 # ETAPA 2: Avaliação individual do avaliador
+st.markdown("""
+<div style="
+    background:#192f4d;
+    color:#fff;
+    border-radius:10px;
+    padding:18px 26px 14px 26px;
+    margin-top:10px;
+    margin-bottom:18px;
+    font-size:1.08em;">
+<b>Critérios de Avaliação:</b>
+<ol style="padding-left:20px;margin-top:10px;">
+  <li><b>Modelo de Negócio</b> – Clareza, inovação e solidez do modelo proposto.</li>
+  <li><b>Escalabilidade</b> – Potencial de crescimento e replicabilidade em larga escala.</li>
+  <li><b>Viabilidade Econômica e Financeira</b> – Sustentabilidade do negócio e projeção de receitas.</li>
+  <li><b>Alinhamento com os Potenciais de Desenvolvimento do Espírito Santo</b> – Contribuição para o ecossistema local.</li>
+  <li><b>Potencial de Expansão Nacional e Internacional</b> – Capacidade de atuação além do mercado regional.</li>
+</ol>
+</div>
+""", unsafe_allow_html=True)
+
 if st.session_state.get(f'selecoes_{avaliador}', []):
     projetos_selecionados = st.session_state[f'selecoes_{avaliador}']
     if len(projetos_selecionados) < 10:
