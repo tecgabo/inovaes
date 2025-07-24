@@ -346,57 +346,10 @@ except Exception:
         "Copie o texto acima manualmente (atualize o Streamlit para habilitar botão de cópia automático)</span>",
         unsafe_allow_html=True
     )
-   
-# ETAPA 3: Ranking geral consolidado
-st.markdown("## Ranking Final dos Projetos")
-avaliadores_lista = ["Avaliador 1", "Avaliador 2", "Avaliador 3", "Avaliador 4", "Avaliador 5"]
-todas_pontuacoes = []
-for a in avaliadores_lista:
-    resp = st.session_state.get(f'pontuacoes_{a}', [])
-    for r in resp:
-        r_copia = r.copy()
-        r_copia["Avaliador"] = a
-        todas_pontuacoes.append(r_copia)
-
-def calcular_ranking(pontuacoes_avaliadores):
-    df = pd.DataFrame(pontuacoes_avaliadores)
-    if df.empty:
-        return pd.DataFrame()
-    crits = [c for c in df.columns if c not in ['Projeto','Avaliador']]
-    df['Total'] = df[crits].sum(axis=1)
-    ranking = df.groupby('Projeto')['Total'].sum().reset_index()
-    ranking = ranking.sort_values('Total', ascending=False).reset_index(drop=True)
-    return ranking
-
-ranking = calcular_ranking(todas_pontuacoes)
-if not ranking.empty:
-    st.dataframe(ranking.head(5), use_container_width=True)
-    st.download_button(
-        "Baixar ranking completo",
-        ranking.to_csv(index=False),
-        file_name="ranking.csv",
-        mime="text/csv"
-    )
-else:
-    st.info("O ranking será exibido após as primeiras avaliações serem concluídas.")
-
-st.markdown("### Exportar todas as respostas completas")
-if todas_pontuacoes:
-    df_respostas = pd.DataFrame(todas_pontuacoes)
-    st.dataframe(df_respostas, use_container_width=True)
-    st.download_button(
-        "Baixar respostas completas (.csv)",
-        df_respostas.to_csv(index=False),
-        file_name="respostas_completas.csv",
-        mime="text/csv"
-    )
-else:
-    st.info("As respostas aparecerão aqui após as avaliações.")
-
-with st.expander("Como funciona?"):
-    st.write("""
-    1. Marque até 10 projetos para avaliação na tabela acima.
-    2. Se quiser, veja a descrição completa de cada projeto usando o menu logo abaixo da tabela.
-    3. Após selecionar 10, confirme sua escolha e faça a avaliação dos critérios.
-    4. O sistema mostra o ranking geral (TOP 5) com os projetos mais bem avaliados.
-    """)
+   st.markdown("""
+<hr style="margin-top:32px; margin-bottom:8px; border:0; border-top:2px solid #293751;" />
+<div style='color:#a5b4c9; font-size: 1.02em; text-align:center; margin-bottom: 20px;'>
+    Desenvolvido por <b>Gabriel Torobay</b> – Diretor de Inovação da TecVitória <br>
+    <a href="mailto:gabriel@tecvitoria.com.br" style="color:#32c2f6;">gabriel@tecvitoria.com.br</a>
+</div>
+""", unsafe_allow_html=True)
