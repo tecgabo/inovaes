@@ -163,7 +163,7 @@ st.write(
 )
 
 df_selecao = df_projetos[["PROJETO", "TIPO", "DESCRIÇÃO"]].copy()
-df_selecao["Selecionar"] = False
+df_selecao.insert(0, "Selecionar", False)
 
 df_editado = st.data_editor(
     df_selecao,
