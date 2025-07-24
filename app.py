@@ -344,9 +344,7 @@ except Exception:
     st.markdown(
         "<span style='color:#22d3fd; font-size:1.05em; font-weight:600;'>"
         "Copie o texto acima manualmente (atualize o Streamlit para habilitar botão de cópia automático)</span>",
-        unsafe_allow_html=True
-    )
-   st.markdown(""")
+        unsafe_allow_html=Truest.markdown("""
 <hr style="margin-top:32px; margin-bottom:8px; border:0; border-top:2px solid #293751;" />
 <div style='color:#a5b4c9; font-size: 1.02em; text-align:center; margin-bottom: 20px;'>
     Desenvolvido por <b>Gabriel Torobay</b> – Diretor de Inovação da TecVitória <br>
