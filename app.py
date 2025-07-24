@@ -316,7 +316,16 @@ if 'ranking_individual' in locals() and not ranking_individual.empty:
     st.markdown("### 📲 Envio para a Comissão Organizadora")
     st.write("Agora que terminamos a avaliação, copie o texto abaixo e envie pelo WhatsApp para a Comissão Organizadora.")
     st.text_area("Mensagem para WhatsApp", msg, height=220)
-   
+
+try:
+    st.write_clipboard(msg, "Copiar mensagem para WhatsApp 📋")
+except Exception:
+    # Fallback para Streamlit antigo
+    st.markdown(
+        "<span style='color:#22d3fd; font-size:1.05em; font-weight:600;'>"
+        "Copie o texto acima manualmente (atualize o Streamlit para habilitar botão de cópia automático)</span>",
+        unsafe_allow_html=True
+    )
    
 # ETAPA 3: Ranking geral consolidado
 st.markdown("## Ranking Final dos Projetos")
